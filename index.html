@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Generador de Regex (Español)</title>
+  <title>Generador de PoE2</title>
   <style>
     /* Estilos */
     body {
@@ -62,48 +62,64 @@
 </head>
 <body>
   <div class="container">
-    <h1>Generador de Regex (Español)</h1>
+    <h1>Generador de PoE2</h1>
 
     <div id="error" class="error"></div>
 
-    <!-- Rareza de Objetos -->
+    <!-- Probabilidad de conseguir Piedra Guía (Mapa) -->
     <div class="mod-row">
       <input type="checkbox" id="mod1_check" />
-      <label for="mod1_check">Rareza de Objetos</label>
-      <input type="radio" name="mod1_radio" id="mod1_low" value="low" checked />
-      <label for="mod1_low">&lt;50%</label>
+      <label for="mod1_check">Probabilidad de conseguir Piedra Guía (Mapa)</label>
+      <input type="radio" name="mod1_radio" id="mod1_low1" value="low1" checked />
+      <label for="mod1_low1">&lt;100%</label>
+      <input type="radio" name="mod1_radio" id="mod1_low2" value="low2" />
+      <label for="mod1_low2">&lt;400%</label>
       <input type="radio" name="mod1_radio" id="mod1_high" value="high" />
-      <label for="mod1_high">&gt;50%</label>
+      <label for="mod1_high">&gt;400%</label>
     </div>
 
-    <!-- Monstruos Raros -->
+    <!-- Rareza de objetos -->
     <div class="mod-row">
       <input type="checkbox" id="mod2_check" />
-      <label for="mod2_check">Monstruos Raros</label>
-      <input type="radio" name="mod2_radio" id="mod2_low" value="low" checked />
-      <label for="mod2_low">&gt;20%</label>
-      <input type="radio" name="mod2_radio" id="mod2_high" value="high" />
-      <label for="mod2_high">&gt;50%</label>
+      <label for="mod2_check">Rareza de objetos</label>
+      <input type="radio" name="mod2_radio" id="mod2_20" value="m20" checked />
+      <label for="mod2_20">&gt;20%</label>
+      <input type="radio" name="mod2_radio" id="mod2_50" value="m50" />
+      <label for="mod2_50">&gt;50%</label>
+      <input type="radio" name="mod2_radio" id="mod2_100" value="m100" />
+      <label for="mod2_100">&gt;100%</label>
     </div>
 
-    <!-- Grupos de Monstruos -->
+    <!-- Cantidad de objetos -->
     <div class="mod-row">
       <input type="checkbox" id="mod3_check" />
-      <label for="mod3_check">Grupos de Monstruos</label>
-      <input type="radio" name="mod3_radio" id="mod3_low" value="low" checked />
-      <label for="mod3_low">&gt;20%</label>
-      <input type="radio" name="mod3_radio" id="mod3_high" value="high" />
-      <label for="mod3_high">&gt;50%</label>
+      <label for="mod3_check">Cantidad de objetos</label>
+      <input type="radio" name="mod3_radio" id="mod3_10" value="m10" checked />
+      <label for="mod3_10">&gt;10%</label>
+      <input type="radio" name="mod3_radio" id="mod3_50" value="m50" />
+      <label for="mod3_50">&gt;50%</label>
     </div>
 
-    <!-- Cantidad de Objetos -->
+    <!-- Monstruos raros -->
     <div class="mod-row">
       <input type="checkbox" id="mod4_check" />
-      <label for="mod4_check">Cantidad de Objetos</label>
-      <input type="radio" name="mod4_radio" id="mod4_low" value="low" checked />
-      <label for="mod4_low">&gt;10%</label>
-      <input type="radio" name="mod4_radio" id="mod4_high" value="high" />
-      <label for="mod4_high">&gt;50%</label>
+      <label for="mod4_check">Monstruos raros</label>
+      <input type="radio" name="mod4_radio" id="mod4_10" value="m10" checked />
+      <label for="mod4_10">&gt;10%</label>
+      <input type="radio" name="mod4_radio" id="mod4_20" value="m20" />
+      <label for="mod4_20">&gt;20%</label>
+      <input type="radio" name="mod4_radio" id="mod4_50" value="m50" />
+      <label for="mod4_50">&gt;50%</label>
+    </div>
+
+    <!-- Grupos de monstruos -->
+    <div class="mod-row">
+      <input type="checkbox" id="mod5_check" />
+      <label for="mod5_check">Grupos de monstruos</label>
+      <input type="radio" name="mod5_radio" id="mod5_20" value="m20" checked />
+      <label for="mod5_20">&gt;20%</label>
+      <input type="radio" name="mod5_radio" id="mod5_50" value="m50" />
+      <label for="mod5_50">&gt;50%</label>
     </div>
 
     <button onclick="generarRegex()">Generar Regex</button>
@@ -112,35 +128,45 @@
   </div>
 
   <script>
-    // Lista de mods con sus regex asociados
+    // Configuraciones de cada sección
     const mods = [
       {
         checkId: "mod1_check",
-        lowRadioId: "mod1_low",
-        highRadioId: "mod1_high",
-        regex_low:  "r.{11}o.*[1-9]\\d+%",    // >=10%
-        regex_high: "rar.*[5-9]\\d+%",       // >=50%
+        radios: [
+          { id: "mod1_low1",  regex: ":\\s\\+\\d{1,2}%" },
+          { id: "mod1_low2",  regex: ":\\s\\+[1-3]\\d{2}%" },
+          { id: "mod1_high",  regex: ":\\s\\+[4-9]\\d\\d" }
+        ]
       },
       {
         checkId: "mod2_check",
-        lowRadioId: "mod2_low",
-        highRadioId: "mod2_high",
-        regex_low:  "c\\D{11}m\\D{9}r.*[2-9]\\d+%",   
-        regex_high: "c\\D{11}m\\D{9}r.*[5-9]\\d+%",   
+        radios: [
+          { id: "mod2_20",   regex: "r.{11}o.*[2-9]\\d+%" },
+          { id: "mod2_50",   regex: "rar.*[5-9]\\d+%" },
+          { id: "mod2_100",  regex: "r.{11}o.*1\\d{2,}%" }
+        ]
       },
       {
         checkId: "mod3_check",
-        lowRadioId: "mod3_low",
-        highRadioId: "mod3_high",
-        regex_low:  "c\\D{11}g\\D{9}m.*[2-9]\\d+%",   
-        regex_high: "c\\D{11}g\\D{9}m.*[5-9]\\d+%",   
+        radios: [
+          { id: "mod3_10", regex: "c\\D{11}o\\D{7}e.*[2-9]\\d+%" },
+          { id: "mod3_50", regex: "c\\D{11}o\\D{7}e.*[5-9]\\d+%" }
+        ]
       },
       {
         checkId: "mod4_check",
-        lowRadioId: "mod4_low",
-        highRadioId: "mod4_high",
-        regex_low:  "c\\D{11}o\\D{7}e.*[1-9]\\d+%",   
-        regex_high: "c\\D{11}o\\D{7}e.*[5-9]\\d+%",   
+        radios: [
+          { id: "mod4_10", regex: "c\\D{11}m\\D{9}r.*[1-9]\\d+%" },
+          { id: "mod4_20", regex: "c\\D{11}m\\D{9}r.*[2-9]\\d+%" },
+          { id: "mod4_50", regex: "c\\D{11}m\\D{9}r.*[5-9]\\d+%" }
+        ]
+      },
+      {
+        checkId: "mod5_check",
+        radios: [
+          { id: "mod5_20", regex: "c\\D{11}g\\D{9}m.*[2-9]\\d+%" },
+          { id: "mod5_50", regex: "c\\D{11}g\\D{9}m.*[5-9]\\d+%" }
+        ]
       }
     ];
 
@@ -151,16 +177,15 @@
 
       let activos = [];
 
-      for (let mod of mods) {
-        const check = document.getElementById(mod.checkId);
-        const lowRadio = document.getElementById(mod.lowRadioId);
-        const highRadio = document.getElementById(mod.highRadioId);
-
+      for (let section of mods) {
+        const check = document.getElementById(section.checkId);
         if (check.checked) {
-          if (lowRadio.checked) {
-            activos.push('"' + mod.regex_low + '"');
-          } else if (highRadio.checked) {
-            activos.push('"' + mod.regex_high + '"');
+          for (let radioData of section.radios) {
+            const radio = document.getElementById(radioData.id);
+            if (radio.checked) {
+              activos.push('"' + radioData.regex + '"');
+              break;
+            }
           }
         }
       }
@@ -183,7 +208,6 @@
     function copiarAlPortapapeles() {
       const contenido = document.getElementById("resultado").value;
       if (!contenido) return;
-
       navigator.clipboard.writeText(contenido)
         .then(() => {
           console.log("Texto copiado al portapapeles:", contenido);
