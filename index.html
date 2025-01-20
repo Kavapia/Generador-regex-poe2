@@ -82,8 +82,8 @@
     <div class="mod-row">
       <input type="checkbox" id="mod2_check" />
       <label for="mod2_check">Rareza de objetos</label>
-      <input type="radio" name="mod2_radio" id="mod2_x20" value="x20" checked />
-      <label for="mod2_x20">-20%</label>
+      <input type="radio" name="mod2_radio" id="mod2_10" value="m10" checked />
+      <label for="mod2_10">+10%</label>
       <input type="radio" name="mod2_radio" id="mod2_20" value="m20" />
       <label for="mod2_20">+20%</label>
       <input type="radio" name="mod2_radio" id="mod2_50" value="m50" />
@@ -130,7 +130,6 @@
   </div>
 
   <script>
-    // Configuraciones de cada sección
     const mods = [
       {
         // Piedra Guía
@@ -145,8 +144,8 @@
         // Rareza de objetos
         checkId: "mod2_check",
         radios: [
-          // -20% (1..19)
-          { id: "mod2_x20",  regex: "rar.{11}o.*([1-9]|1\\d)%" },
+          // +10% (10..999+)
+          { id: "mod2_10",   regex: "rar.{11}o.*[1-9]\\d+%" },
           // +20% (20..999+)
           { id: "mod2_20",   regex: "rar.{11}o.*[2-9]\\d+%" },
           // +50% (50..999+)
